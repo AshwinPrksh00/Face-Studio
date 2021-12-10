@@ -130,7 +130,10 @@ if img_uploaded is not None:
         col = k2.color_picker('Pick a Color')
         img_copy = new_img.copy()
         img_bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_detector(img_bw)
+        try:
+            faces = face_detector(img_bw)
+        except:
+            k2.write('Upload an Image with a face')
         for face in faces:
             x1, y1 = face.left(), face.top()
             x2, y2 = face.right(), face.bottom()
