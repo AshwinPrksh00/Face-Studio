@@ -116,6 +116,7 @@ if img_uploaded is not None:
     if reset:
         st.session_state.lips_arr.clear()
         st.session_state.hair_arr.clear()
+        st.session_state.facePoints.clear()
         select = 'Select'
     uploaded_img = Image.open(img_uploaded)
     # k2.image(uploaded_img)
@@ -136,7 +137,8 @@ if img_uploaded is not None:
             x = [landmarks.part(i).x for i in range(68)]
             y = [landmarks.part(i).y for i in range(68)]
             face_points = [[i,j] for i,j in zip(x,y)]  
-
+            if 'facePoints' not in st.session_state:
+                st.session_state.facePoints = face_points
         #Cropping Lips section
         lips = createBoundBox(img, face_points[48:61], face_points[60:69], masked=True, cropped=False)
 
@@ -189,6 +191,7 @@ if img_uploaded is not None:
 
         
     elif select == 'Final Mix':
+        eyeLiner = side.checkbox('Eyeliner')
         img1 = new_img.copy()
         lips_mask = st.session_state.lips_arr[-1]
         hair_mask = st.session_state.hair_arr[-1]
@@ -196,6 +199,13 @@ if img_uploaded is not None:
         beta = (1.0 - alpha)
         fin_out = cv2.addWeighted(img1, alpha, hair_mask, beta,0)
         fin_out = cv2.addWeighted(fin_out, 1, lips_mask,0.4,0)
-        k2.image(Image.fromarray(fin_out))
+        if eyeLiner:
+            eyefin = fin_out.copy()
+            eyefin = cv2.polylines(eyefin, [np.array(st.session_state.facePoints[36:42])], True, (0,0,0),1, cv2.LINE_AA)
+            eyefin = cv2.polylines(eyefin, [np.array(st.session_state.facePoints[42:48])], True, (0,0,0),1, cv2.LINE_AA)
+            k2.image(Image.fromarray(eyefin))
+        else:
+            k2.image(Image.fromarray(fin_out))
+
 
 
