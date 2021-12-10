@@ -137,8 +137,7 @@ if img_uploaded is not None:
             x = [landmarks.part(i).x for i in range(68)]
             y = [landmarks.part(i).y for i in range(68)]
             face_points = [[i,j] for i,j in zip(x,y)]  
-            if 'facePoints' not in st.session_state:
-                st.session_state.facePoints = face_points
+            st.session_state.facePoints = face_points
         #Cropping Lips section
         lips = createBoundBox(img, face_points[48:61], face_points[60:69], masked=True, cropped=False)
 
