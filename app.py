@@ -7,14 +7,17 @@ import keras
 import os
 from PIL import Image
 
+
+# PATH
+org_path = os.getcwd()
 #Page Configs
 st.set_page_config(page_title='Face Studio', page_icon = './assets/icon.png', layout = 'wide', initial_sidebar_state = 'auto')
 k1, k2, k3 = st.columns(3)
 k2.title('Face Studio')
 #Loading model for hair segmentation
-model = keras.models.load_model('checkpoints/model/checkpoint.hdf5')
+model = keras.models.load_model('./checkpoints/model/checkpoint.hdf5')
 face_detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
 
 #Functions for Lip Coloring
 
