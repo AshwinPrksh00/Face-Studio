@@ -8,16 +8,14 @@ import os
 from PIL import Image
 
 
-# PATH
-org_path = os.getcwd()
 #Page Configs
 st.set_page_config(page_title='Face Studio', page_icon = './assets/icon.png', layout = 'wide', initial_sidebar_state = 'auto')
 k1, k2, k3 = st.columns(3)
 k2.title('Face Studio')
 #Loading model for hair segmentation
-model = keras.models.load_model(os.path.join(org_path,'/checkpoints/model/checkpoint.hdf5'))
+model = keras.models.load_model('./checkpoints/model/checkpoint.hdf5')
 face_detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor(os.path.join(org_path,'/shape_predictor_68_face_landmarks.dat'))
+predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
 
 #Functions for Lip Coloring
 
@@ -103,7 +101,7 @@ def hex2rgb(str1):
 #---------------------------------------------------------------
 #Sidebar Configs
 side = st.sidebar
-side.image(os.path.join(org_path,'./assets/icon.png'))
+side.image('./assets/icon.png')
 select = side.selectbox('Select Region', options=('Select','Lips', 'Hair', 'Final Mix'))
 reset = side.button('Reset Changes',key=1)
 #-----------------------------------------------------------------
