@@ -31,4 +31,4 @@ A streamlit app which uses Instance Segmentation for Coloring Lips and Hair
 
 ## Notes
 - If you have trouble installing ```dlib```, <a href="https://www.pyimagesearch.com/2018/01/22/install-dlib-easy-complete-guide/"> Click Here</a> for a comprehensive installation guide.
-- If your OS is Windows, then install Visual Studio Installer and in it ```Installed>Visual Studio Community>Modify>Desktop Development with C++>C++ Cmake tools for Windows``` and install it. Then proceed to the installation instructions.
+- If your OS is Windows, then install Visual Studio Installer and in it <br>```Installed > Visual Studio Community > Modify > Desktop Development with C++ > C++ Cmake tools for Windows```<br> and install it. Then proceed to the installation instructions.
