@@ -5,3 +5,4 @@ opencv-python==4.2.0.34
 scikit-image==0.17.2
 tensorflow==2.6.2
 keras==2.6.0
+six==1.14.0
