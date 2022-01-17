@@ -4,7 +4,6 @@ WORKDIR /Face-Studio
 
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
-EXPOSE 8501
 COPY . .
 ENTRYPOINT ["streamlit", "run"]
-CMD ["app.py"]
+CMD ["app.py; gunicorn --bind 0.0.0.0:$PORT wsgi"]
