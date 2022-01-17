@@ -1,3 +1,4 @@
+from pickle import FALSE, TRUE
 import streamlit as st
 import dlib
 import numpy as np
@@ -6,6 +7,8 @@ import tensorflow as tf
 import keras
 import os
 from PIL import Image
+from random import randint
+
 
 
 #Page Configs
@@ -102,13 +105,21 @@ def hex2rgb(str1):
 #Sidebar Configs
 side = st.sidebar
 side.image('./assets/icon.png')
-select = side.selectbox('Select Region', options=('Select','Lips', 'Hair', 'Final Mix'))
+if 'key2' not in st.session_state:
+    st.session_state.key2 = str(randint(1000, 100000000))
+opt = side.empty()
+select = opt.selectbox('Select Region', options=('Select','Lips', 'Hair', 'Final Mix'), key = st.session_state.key2)
 reset = side.button('Reset Changes',key=1)
+eye_lining = side.empty()
 #-----------------------------------------------------------------
 
 #Main Code
+eye_line = FALSE
+if 'key' not in st.session_state:
+    st.session_state.key = str(randint(1000, 100000000))
 
-img_uploaded = k2.file_uploader('Upload Your Image', type=['png', 'jpg', 'webp'])
+
+img_uploaded = k2.file_uploader('Upload Your Image', type=['png', 'jpg', 'webp'], key = st.session_state.key)
 if img_uploaded is not None:
     if 'lips_arr' not in st.session_state:
         st.session_state.lips_arr = []
@@ -118,7 +129,17 @@ if img_uploaded is not None:
         st.session_state.lips_arr.clear()
         st.session_state.hair_arr.clear()
         st.session_state.facePoints.clear()
-        select = 'Select'
+        if eye_line:
+            eye_line = FALSE
+            eye_lining.checkbox('Eyeliner', key = 90)
+        if 'key' in st.session_state.keys():
+            st.session_state.pop('key')
+        if 'key2' in st.session_state.keys():
+            st.session_state.pop('key2')
+            st.experimental_rerun()
+
+
+        # select = 'Select'
     uploaded_img = Image.open(img_uploaded)
     # k2.image(uploaded_img)
     img = np.array(uploaded_img)
@@ -191,7 +212,7 @@ if img_uploaded is not None:
 
         
     elif select == 'Final Mix':
-        eyeLiner = side.checkbox('Eyeliner')
+        eyeLiner = eye_lining.checkbox('Eyeliner', key = 9)
         img1 = new_img.copy()
         lips_mask = st.session_state.lips_arr[-1]
         hair_mask = st.session_state.hair_arr[-1]
@@ -200,6 +221,7 @@ if img_uploaded is not None:
         fin_out = cv2.addWeighted(img1, alpha, hair_mask, beta,0)
         fin_out = cv2.addWeighted(fin_out, 1, lips_mask,0.4,0)
         if eyeLiner:
+            eye_line = TRUE
             eyefin = fin_out.copy()
             eyefin = cv2.polylines(eyefin, [np.array(st.session_state.facePoints[36:42])], True, (0,0,0),1, cv2.LINE_AA)
             eyefin = cv2.polylines(eyefin, [np.array(st.session_state.facePoints[42:48])], True, (0,0,0),1, cv2.LINE_AA)
