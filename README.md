@@ -1,5 +1,5 @@
 # Face-Studio
-A streamlit app which uses Instance Segmentation for Coloring Lips and Hair
+A streamlit app which uses Instance Segmentation for coloring lips and hair
 
 ## Features
 - Lip Coloring<br>
